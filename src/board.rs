@@ -5,7 +5,7 @@ use crate::name::Name;
 pub struct Board {
 	height: usize,
 	width: usize,
-	board: Vec<Vec<Option<Piece>>>,
+	pub(crate) board: Vec<Vec<Option<Piece>>>,
 }
 
 impl Board {
@@ -58,6 +58,12 @@ impl Board {
 		board[7][5] = Some(Piece::new(Color::Black, Name::Bishop));
 		board[7][6] = Some(Piece::new(Color::Black, Name::Knight));
 		board[7][7] = Some(Piece::new(Color::Black, Name::Rook));
+	}
+
+	pub fn move_piece(&mut self, r1: usize, c1: usize, r2: usize, c2: usize) {
+		let piece = self.board[r1][c1];
+		self.board[r1][c1] = None;
+		self.board[r2][c2] = piece;
 	}
 
 	pub fn print(&self) {

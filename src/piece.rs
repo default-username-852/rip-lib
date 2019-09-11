@@ -3,7 +3,7 @@ use crate::name::Name;
 
 #[derive(Copy, Clone)]
 pub struct Piece {
-	color: Color,
+	pub(crate) color: Color,
 	pub(crate) name: Name,
 	moved: bool,
 }
