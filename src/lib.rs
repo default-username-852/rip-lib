@@ -1,4 +1,5 @@
-pub mod board;
+mod board;
 mod color;
+pub mod game;
 mod name;
 mod piece;
