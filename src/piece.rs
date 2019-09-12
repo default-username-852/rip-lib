@@ -5,7 +5,7 @@ use crate::name::Name;
 pub struct Piece {
 	pub(crate) color: Color,
 	pub(crate) name: Name,
-	moved: bool,
+	pub(crate) moved: bool,
 }
 
 impl Piece {

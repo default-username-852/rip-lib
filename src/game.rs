@@ -1,5 +1,6 @@
 use crate::board::Board;
 use crate::color::Color;
+use crate::name::Name;
 
 pub struct Game {
 	board: Board,
@@ -31,6 +32,82 @@ impl Game {
 
 		if self.board.board[r1][c1].unwrap().color != self.turn {
 			return Err("You can't move the opponent's piece".to_string());
+		}
+
+		// check that the piece is allowed to go there
+		match self.board.board[r1][c1].unwrap().name {
+			Name::King => {
+				if
+					(r1 as isize - r2 as isize).abs() != 1 &&
+					(c1 as isize - c2 as isize).abs() != 1
+				{
+					return Err("The king cannot move to that position".to_string());
+				}
+			},
+			Name::Queen => {
+				if
+					r1 != r2 && c1 != c2 &&
+					(r1 as isize - r2 as isize).abs() !=
+						(c1 as isize - c2 as isize).abs()
+				{
+					return Err("The queen cannot move to that position".to_string());
+				}
+			},
+			Name::Rook => {
+				if r1 != r2 && c1 != c2 {
+					return Err("The rook cannot move to that position".to_string());
+				}
+			},
+			Name::Bishop => {
+				if
+					(r1 as isize - r2 as isize).abs() !=
+						(c1 as isize - c2 as isize).abs()
+				{
+					return Err("The bishop cannot move to that position".to_string());
+				}
+			},
+			Name::Knight => {
+				// the Pythagorean theorem tells us that the knight can only move
+				// to positions within sqrt(5) of its original position
+				if
+						(r1 as isize - r2 as isize).pow(2) +
+						(c1 as isize - c2 as isize).pow(2) != 5
+				{
+					println!("{}", (
+						(r1 as isize - r2 as isize).pow(2) +
+						(c1 as isize - c2 as isize).pow(2)
+					).pow(2));
+					return Err("The knight cannot move to that position".to_string());
+				}
+			},
+			Name::Pawn => {
+				if c1 != c2 {
+					return Err("The pawn cannot move to that position".to_string());
+				}
+
+				if self.turn == Color::White {
+					if (r1 as isize - r2 as isize) > 0 {
+						return Err("The pawn cannot move to that position".to_string());
+					}
+				} else {
+					if (r1 as isize - r2 as isize) < 0 {
+						return Err("The pawn cannot move to that position".to_string());
+					}
+				}
+
+				// if we have come this far, the pawn isn't trying to move to the side
+				// nor is it trying to move backwards
+
+				if
+					(r1 as isize - r2 as isize).abs() != 1 &&
+					!(
+						(r1 as isize - r2 as isize).abs() == 2 &&
+						self.board.board[r1][c1].unwrap().moved == false
+					)
+				{
+					return Err("The pawn cannot move to that position".to_string());
+				}
+			},
 		}
 
 		if self.board.board[r2][c2].is_some() {
