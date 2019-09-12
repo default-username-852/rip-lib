@@ -65,6 +65,7 @@ impl Board {
 		let mut piece = self.board[r1][c1].unwrap();
 		self.board[r1][c1] = None;
 		piece.prev_square = Square::new(r1, c1);
+		piece.curr_square = Square::new(r2, c2);
 		self.board[r2][c2] = Some(piece);
 	}
 

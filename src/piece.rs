@@ -8,6 +8,7 @@ pub struct Piece {
 	pub(crate) name: Name,
 	pub(crate) moved: bool,
 	pub(crate) prev_square: Square,
+	pub(crate) curr_square: Square,
 }
 
 impl Piece {
@@ -17,6 +18,7 @@ impl Piece {
 			name: name,
 			moved: false,
 			prev_square: Square::new(r, c),
+			curr_square: Square::new(r, c),
 		}
 	}
 }
