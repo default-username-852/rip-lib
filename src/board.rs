@@ -67,7 +67,9 @@ impl Board {
 	}
 
 	pub fn print(&self) {
+		println!(" ABCDEFGH");
 		for i in 0..self.height {
+			print!("{}", i + 1);
 			for j in 0..self.width {
 				match self.board[i][j] {
 					Some(piece) => {
