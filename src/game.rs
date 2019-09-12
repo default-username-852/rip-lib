@@ -81,10 +81,7 @@ impl Game {
 				}
 			},
 			Name::Pawn => {
-				if c1 != c2 {
-					return Err("The pawn cannot move to that position".to_string());
-				}
-
+				// check if the pawn is trying to move backwards
 				if self.turn == Color::White {
 					if (r1 as isize - r2 as isize) > 0 {
 						return Err("The pawn cannot move to that position".to_string());
@@ -95,17 +92,28 @@ impl Game {
 					}
 				}
 
-				// if we have come this far, the pawn isn't trying to move to the side
-				// nor is it trying to move backwards
-
-				if
-					(r1 as isize - r2 as isize).abs() != 1 &&
-					!(
-						(r1 as isize - r2 as isize).abs() == 2 &&
-						self.board.board[r1][c1].unwrap().moved == false
-					)
-				{
-					return Err("The pawn cannot move to that position".to_string());
+				if c1 != c2 {
+					if
+						!(
+							(r1 as isize - r2 as isize).abs() == 1 &&
+							(c1 as isize - c2 as isize).abs() == 1 &&
+							self.board.board[r2][c2].is_some()
+						)
+					{
+						// the pawn is only allowed to move between columns
+						// to capture another piece
+						return Err("The pawn cannot move to that position".to_string());
+					}
+				} else {
+					if
+						(r1 as isize - r2 as isize).abs() != 1 &&
+						!(
+							(r1 as isize - r2 as isize).abs() == 2 &&
+							self.board.board[r1][c1].unwrap().moved == false
+						)
+					{
+						return Err("The pawn cannot move to that position".to_string());
+					}
 				}
 			},
 		}
