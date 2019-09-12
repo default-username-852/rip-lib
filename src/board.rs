@@ -39,8 +39,8 @@ impl Board {
 		board[0][0] = Some(Piece::new(Color::White, Name::Rook));
 		board[0][1] = Some(Piece::new(Color::White, Name::Knight));
 		board[0][2] = Some(Piece::new(Color::White, Name::Bishop));
-		board[0][3] = Some(Piece::new(Color::White, Name::Queen));
-		board[0][4] = Some(Piece::new(Color::White, Name::King));
+		board[0][3] = Some(Piece::new(Color::White, Name::King));
+		board[0][4] = Some(Piece::new(Color::White, Name::Queen));
 		board[0][5] = Some(Piece::new(Color::White, Name::Bishop));
 		board[0][6] = Some(Piece::new(Color::White, Name::Knight));
 		board[0][7] = Some(Piece::new(Color::White, Name::Rook));
@@ -53,8 +53,8 @@ impl Board {
 		board[7][0] = Some(Piece::new(Color::Black, Name::Rook));
 		board[7][1] = Some(Piece::new(Color::Black, Name::Knight));
 		board[7][2] = Some(Piece::new(Color::Black, Name::Bishop));
-		board[7][3] = Some(Piece::new(Color::Black, Name::Queen));
-		board[7][4] = Some(Piece::new(Color::Black, Name::King));
+		board[7][3] = Some(Piece::new(Color::Black, Name::King));
+		board[7][4] = Some(Piece::new(Color::Black, Name::Queen));
 		board[7][5] = Some(Piece::new(Color::Black, Name::Bishop));
 		board[7][6] = Some(Piece::new(Color::Black, Name::Knight));
 		board[7][7] = Some(Piece::new(Color::Black, Name::Rook));
