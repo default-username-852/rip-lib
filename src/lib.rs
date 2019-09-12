@@ -3,3 +3,4 @@ mod color;
 pub mod game;
 mod name;
 mod piece;
+mod square;

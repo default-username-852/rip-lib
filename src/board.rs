@@ -1,6 +1,7 @@
 use crate::piece::Piece;
 use crate::color::Color;
 use crate::name::Name;
+use crate::square::Square;
 
 pub struct Board {
 	height: usize,
@@ -36,34 +37,35 @@ impl Board {
 		height: usize,
 		width: usize
 	) {	
-		board[0][0] = Some(Piece::new(Color::White, Name::Rook));
-		board[0][1] = Some(Piece::new(Color::White, Name::Knight));
-		board[0][2] = Some(Piece::new(Color::White, Name::Bishop));
-		board[0][3] = Some(Piece::new(Color::White, Name::King));
-		board[0][4] = Some(Piece::new(Color::White, Name::Queen));
-		board[0][5] = Some(Piece::new(Color::White, Name::Bishop));
-		board[0][6] = Some(Piece::new(Color::White, Name::Knight));
-		board[0][7] = Some(Piece::new(Color::White, Name::Rook));
+		board[0][0] = Some(Piece::new(Color::White, Name::Rook, 0, 0));
+		board[0][1] = Some(Piece::new(Color::White, Name::Knight, 0, 1));
+		board[0][2] = Some(Piece::new(Color::White, Name::Bishop, 0, 2));
+		board[0][3] = Some(Piece::new(Color::White, Name::King, 0, 3));
+		board[0][4] = Some(Piece::new(Color::White, Name::Queen, 0, 4));
+		board[0][5] = Some(Piece::new(Color::White, Name::Bishop, 0, 5));
+		board[0][6] = Some(Piece::new(Color::White, Name::Knight, 0, 6));
+		board[0][7] = Some(Piece::new(Color::White, Name::Rook, 0, 7));
 
 		for i in 0..width {
-			board[1][i] = Some(Piece::new(Color::White, Name::Pawn));
-			board[6][i] = Some(Piece::new(Color::Black, Name::Pawn));
+			board[1][i] = Some(Piece::new(Color::White, Name::Pawn, 1, i));
+			board[6][i] = Some(Piece::new(Color::Black, Name::Pawn, 6, i));
 		}
 
-		board[7][0] = Some(Piece::new(Color::Black, Name::Rook));
-		board[7][1] = Some(Piece::new(Color::Black, Name::Knight));
-		board[7][2] = Some(Piece::new(Color::Black, Name::Bishop));
-		board[7][3] = Some(Piece::new(Color::Black, Name::King));
-		board[7][4] = Some(Piece::new(Color::Black, Name::Queen));
-		board[7][5] = Some(Piece::new(Color::Black, Name::Bishop));
-		board[7][6] = Some(Piece::new(Color::Black, Name::Knight));
-		board[7][7] = Some(Piece::new(Color::Black, Name::Rook));
+		board[7][0] = Some(Piece::new(Color::Black, Name::Rook, 7, 0));
+		board[7][1] = Some(Piece::new(Color::Black, Name::Knight, 7, 1));
+		board[7][2] = Some(Piece::new(Color::Black, Name::Bishop, 7, 2));
+		board[7][3] = Some(Piece::new(Color::Black, Name::King, 7, 3));
+		board[7][4] = Some(Piece::new(Color::Black, Name::Queen, 7, 4));
+		board[7][5] = Some(Piece::new(Color::Black, Name::Bishop, 7, 5));
+		board[7][6] = Some(Piece::new(Color::Black, Name::Knight, 7, 6));
+		board[7][7] = Some(Piece::new(Color::Black, Name::Rook, 7, 7));
 	}
 
 	pub fn move_piece(&mut self, r1: usize, c1: usize, r2: usize, c2: usize) {
-		let piece = self.board[r1][c1];
+		let mut piece = self.board[r1][c1].unwrap();
 		self.board[r1][c1] = None;
-		self.board[r2][c2] = piece;
+		piece.prev_square = Square::new(r1, c1);
+		self.board[r2][c2] = Some(piece);
 	}
 
 	pub fn print(&self) {
