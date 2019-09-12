@@ -69,6 +69,10 @@ impl Board {
 		self.board[r2][c2] = Some(piece);
 	}
 
+	pub fn capture_piece(&mut self, r: usize, c: usize) {
+		self.board[r][c] = None;
+	}
+
 	pub fn print(&self) {
 		println!(" ABCDEFGH");
 		for i in 0..self.height {
