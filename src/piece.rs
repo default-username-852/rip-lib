@@ -2,7 +2,7 @@ use crate::color::Color;
 use crate::name::Name;
 use crate::square::Square;
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, PartialEq)]
 pub struct Piece {
 	pub(crate) color: Color,
 	pub(crate) name: Name,
