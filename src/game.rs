@@ -1,10 +1,12 @@
 use crate::board::Board;
 use crate::color::Color;
 use crate::name::Name;
+use crate::piece::Piece;
 
 pub struct Game {
 	board: Board,
 	turn: Color,
+	moved_last: Option<Piece>,
 }
 
 impl Game {
@@ -14,6 +16,7 @@ impl Game {
 		Game {
 			board: board,
 			turn: Color::White,
+			moved_last: None,
 		}
 	}
 
@@ -128,6 +131,8 @@ impl Game {
 		}
 
 		self.board.move_piece(r1, c1, r2, c2);
+
+		self.moved_last = self.board.board[r2][c2];
 
 		self.turn = match self.turn {
 			Color::White => Color::Black,
