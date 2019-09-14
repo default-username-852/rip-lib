@@ -40,8 +40,8 @@ impl Board {
 		board[0][0] = Some(Piece::new(Color::White, Name::Rook, 0, 0));
 		board[0][1] = Some(Piece::new(Color::White, Name::Knight, 0, 1));
 		board[0][2] = Some(Piece::new(Color::White, Name::Bishop, 0, 2));
-		board[0][3] = Some(Piece::new(Color::White, Name::King, 0, 3));
-		board[0][4] = Some(Piece::new(Color::White, Name::Queen, 0, 4));
+		board[0][3] = Some(Piece::new(Color::White, Name::Queen, 0, 3));
+		board[0][4] = Some(Piece::new(Color::White, Name::King, 0, 4));
 		board[0][5] = Some(Piece::new(Color::White, Name::Bishop, 0, 5));
 		board[0][6] = Some(Piece::new(Color::White, Name::Knight, 0, 6));
 		board[0][7] = Some(Piece::new(Color::White, Name::Rook, 0, 7));
@@ -54,8 +54,8 @@ impl Board {
 		board[7][0] = Some(Piece::new(Color::Black, Name::Rook, 7, 0));
 		board[7][1] = Some(Piece::new(Color::Black, Name::Knight, 7, 1));
 		board[7][2] = Some(Piece::new(Color::Black, Name::Bishop, 7, 2));
-		board[7][3] = Some(Piece::new(Color::Black, Name::King, 7, 3));
-		board[7][4] = Some(Piece::new(Color::Black, Name::Queen, 7, 4));
+		board[7][3] = Some(Piece::new(Color::Black, Name::Queen, 7, 3));
+		board[7][4] = Some(Piece::new(Color::Black, Name::King, 7, 4));
 		board[7][5] = Some(Piece::new(Color::Black, Name::Bishop, 7, 5));
 		board[7][6] = Some(Piece::new(Color::Black, Name::Knight, 7, 6));
 		board[7][7] = Some(Piece::new(Color::Black, Name::Rook, 7, 7));
@@ -75,7 +75,7 @@ impl Board {
 
 	pub fn print(&self) {
 		println!(" ABCDEFGH");
-		for i in 0..self.height {
+		for i in (0..self.height).rev() {
 			print!("{}", i + 1);
 			for j in 0..self.width {
 				match self.board[i][j] {
