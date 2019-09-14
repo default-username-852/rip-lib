@@ -78,18 +78,10 @@ impl Board {
 		for i in (0..self.height).rev() {
 			print!("{}", i + 1);
 			for j in 0..self.width {
-				match self.board[i][j] {
-					Some(piece) => {
-						match piece.name {
-							Name::King => print!("K"),
-							Name::Queen => print!("Q"),
-							Name::Rook => print!("R"),
-							Name::Bishop => print!("B"),
-							Name::Knight => print!("N"),
-							Name::Pawn => print!("P"),
-						}
-					},
-					None => print!("."),
+				if self.board[i][j].is_some() {
+					print!("{}", self.board[i][j].unwrap());
+				} else {
+					print!(".");
 				}
 			}
 			println!();
