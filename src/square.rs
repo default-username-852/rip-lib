@@ -14,6 +14,20 @@ impl Square {
 			rank: rank,
 		}
 	}
+
+	pub fn from_str(square: &str) -> Result<Square, ()> {
+		if square.len() > 2 {
+			return Err(());
+		}
+
+		let file = File::from_char(square.chars().nth(0).unwrap())?;
+		let rank = Rank::from_char(square.chars().nth(1).unwrap())?;
+
+		Ok(Square {
+			file: file,
+			rank: rank,
+		})
+	}
 }
 
 impl std::fmt::Debug for Square {
