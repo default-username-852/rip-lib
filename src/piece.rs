@@ -23,6 +23,27 @@ impl Piece {
 			curr_square: Square::new(r, c),
 		}
 	}
+
+	pub fn special_capture_move(&self) -> bool {
+		match self.name {
+			Name::Pawn => true,
+			_ => false,
+		}
+	}
+
+	pub fn repetetive_moves(&self) -> bool {
+		match self.name {
+			Name::King | Name::Knight | Name::Pawn => false,
+			Name::Queen | Name::Rook | Name::Bishop => true,
+		}
+	}
+
+	pub fn can_jump(&self) -> bool {
+		match self.name {
+			Name::Knight => true,
+			_ => false,
+		}
+	}
 }
 
 impl fmt::Display for Piece {
