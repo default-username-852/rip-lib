@@ -1,4 +1,5 @@
 use crate::color::Color;
+use crate::direction::Direction;
 use crate::name::Name;
 use crate::square::Square;
 
@@ -21,6 +22,66 @@ impl Piece {
 			moved: false,
 			prev_square: Square::new(r, c),
 			curr_square: Square::new(r, c),
+		}
+	}
+
+	pub fn moves(&self) -> Vec<Vec<Direction>> {
+		match self.name {
+			Name::King | Name::Queen =>
+				vec![
+					vec![Direction::Up],
+					vec![Direction::Down],
+					vec![Direction::Left],
+					vec![Direction::Right],
+					vec![Direction::UpLeft],
+					vec![Direction::UpRight],
+					vec![Direction::DownLeft],
+					vec![Direction::DownRight]
+				],
+			Name::Rook =>
+				vec![
+					vec![Direction::Up],
+					vec![Direction::Down],
+					vec![Direction::Left],
+					vec![Direction::Right]
+				],
+			Name::Bishop =>
+				vec![
+					vec![Direction::UpLeft],
+					vec![Direction::UpRight],
+					vec![Direction::DownLeft],
+					vec![Direction::DownRight]
+				],
+			Name::Knight =>
+				vec![
+					vec![Direction::UpLeft, Direction::Up],
+					vec![Direction::UpLeft, Direction::Left],
+					vec![Direction::UpRight, Direction::Up],
+					vec![Direction::UpRight, Direction::Right],
+					vec![Direction::DownLeft, Direction::Down],
+					vec![Direction::DownLeft, Direction::Left],
+					vec![Direction::DownRight, Direction::Down],
+					vec![Direction::DownRight, Direction::Right]
+				],
+			Name::Pawn => {
+				if self.moved {
+					vec![
+						vec![Direction::Up]
+					]
+				} else {
+					vec![
+						vec![Direction::Up],
+						vec![Direction::Up, Direction::Up]
+					]
+				}
+			},
+		}
+	}
+
+	pub fn capture_moves(&self) -> Vec<Vec<Direction>> {
+		match self.name {
+			Name::Pawn => vec![vec![Direction::UpLeft], vec![Direction::UpRight]],
+			_  => self.moves(),
 		}
 	}
 
