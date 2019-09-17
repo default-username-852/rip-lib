@@ -25,6 +25,17 @@ impl Piece {
 		}
 	}
 
+	pub fn simple(name: Name) -> Piece {
+		let square = Square::from_str("A1").unwrap();
+		Piece {
+			color: Color::White,
+			name: name,
+			moved: false,
+			prev_square: square,
+			curr_square: square,
+		}
+	}
+
 	pub fn moves(&self) -> Vec<Vec<Direction>> {
 		match self.name {
 			Name::King | Name::Queen =>
