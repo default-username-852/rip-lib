@@ -15,13 +15,13 @@ pub struct Piece {
 }
 
 impl Piece {
-	pub fn new(color: Color, name: Name, r: usize, c: usize) -> Piece {
+	pub fn new(color: Color, name: Name, square: Square) -> Piece {
 		Piece {
 			color: color,
 			name: name,
 			moved: false,
-			prev_square: Square::new(r, c),
-			curr_square: Square::new(r, c),
+			prev_square: square,
+			curr_square: square,
 		}
 	}
 
