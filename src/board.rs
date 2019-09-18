@@ -4,6 +4,7 @@ use crate::name::Name;
 use crate::square::Square;
 use crate::file::File;
 use crate::rank::Rank;
+use crate::direction::Direction;
 
 pub struct Board {
 	height: usize,
@@ -87,6 +88,113 @@ impl Board {
 			}
 			println!();
 		}
+	}
+
+	pub fn legal_moves(&self, square: Square) -> Vec<Square> {
+		let mut legal_moves = Vec::new();
+
+		let piece = self.board
+			[square.rank.as_usize()][square.file.as_usize()].unwrap();
+
+		if piece.special_capture_move() {
+			legal_moves.extend_from_slice(
+				&self.calculate_legal_moves(square,	piece.moves(), false)
+			);
+
+			legal_moves.extend_from_slice(
+				&self.calculate_legal_moves(square, piece.capture_moves(), true)
+			);
+		} else {
+			legal_moves.extend_from_slice(
+				&self.calculate_legal_moves(square, piece.moves(), false)
+			);
+		}
+
+		return legal_moves;
+	}
+
+	// if the piece chosen piece doesn't have special capture moves,
+	// capture_moves should be set to false
+	fn calculate_legal_moves(
+		&self,
+		square: Square,
+		moves: Vec<Vec<Direction>>,
+		capture_moves: bool
+	) -> Vec<Square> {
+		let mut legal_moves = Vec::new();
+		let piece = self.board
+			[square.rank.as_usize()][square.file.as_usize()].unwrap();
+		let direction_change = match piece.color {
+			Color::White => 1,
+			Color::Black => -1,
+		};
+
+		for i in 0..moves.len() {
+			let mut curr_rank: isize = square.rank.as_isize();
+			let mut curr_file: isize = square.file.as_isize();
+
+			'repetetive: loop {
+				for j in 0..moves[i].len() {
+					curr_rank += moves[i][j].delta_y() * direction_change;
+					curr_file += moves[i][j].delta_x() * direction_change;
+
+					let file = match File::from_isize(curr_file) {
+						Ok(f) => f,
+						Err(_) => break 'repetetive,
+					};
+
+					let rank = match Rank::from_isize(curr_rank) {
+						Ok(r) => r,
+						Err(_) => break 'repetetive,
+					};
+
+					let square = Square::new(file, rank);
+
+					let curr_piece =
+						self.board[curr_rank as usize][curr_file as usize];
+
+					if j != moves[i].len() - 1 {
+						if piece.can_jump() || curr_piece.is_none() {
+							continue;
+						} else {
+							break;
+						}
+					} else {
+						let mut capture = false;
+
+						if curr_piece.is_none() {
+							if capture_moves {
+								break 'repetetive;
+							}
+						} else {
+							if !capture_moves && piece.special_capture_move() {
+								break;
+							}
+
+							let captured_piece = curr_piece.unwrap();
+
+							if captured_piece.color == piece.color {
+								break 'repetetive;
+							} else {
+								capture = true;
+							}
+						}
+
+						legal_moves.push(square);
+
+						if capture {
+							break 'repetetive;
+						}
+					}
+				}
+
+				if !piece.repetetive_moves() {
+					break;
+				}
+			}
+		}
+
+		return legal_moves;
 	}
 
 	pub fn can_capture(&self, square: Square, color: Color) -> Vec<Square> {
