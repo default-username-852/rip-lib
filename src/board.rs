@@ -45,17 +45,17 @@ impl Board {
 
 		for i in 0..width {
 			board[1][i] = Some(Piece::new(
-				Color::White, Name::Pawn, Square::new(File(i), Rank(1))
+				Color::White, Name::Pawn, Square::new(Rank(1), File(i))
 			));
 			board[6][i] = Some(Piece::new(
-				Color::Black, Name::Pawn, Square::new(File(i), Rank(6))
+				Color::Black, Name::Pawn, Square::new(Rank(6), File(i))
 			));
 
 			board[0][i] = Some(Piece::new(
-				Color::White, names[i], Square::new(File(i), Rank(0))
+				Color::White, names[i], Square::new(Rank(0), File(i))
 			));
 			board[7][i] = Some(Piece::new(
-				Color::Black, names[i], Square::new(File(i), Rank(7))
+				Color::Black, names[i], Square::new(Rank(7), File(i))
 			));
 		}
 	}
@@ -148,7 +148,7 @@ impl Board {
 						Err(_) => break 'repetetive,
 					};
 
-					let square = Square::new(file, rank);
+					let square = Square::new(rank, file);
 
 					let curr_piece =
 						self.board[curr_rank as usize][curr_file as usize];
@@ -230,7 +230,7 @@ impl Board {
 							Err(_) => break 'repetetive,
 						};
 
-						let square = Square::new(file, rank);
+						let square = Square::new(rank, file);
 
 						let curr_piece =
 							self.board[curr_rank as usize][curr_file as usize];

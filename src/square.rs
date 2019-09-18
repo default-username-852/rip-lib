@@ -3,15 +3,15 @@ use crate::file::File;
 
 #[derive(Copy, Clone, PartialEq)]
 pub struct Square {
-	pub(crate) file: File,
 	pub(crate) rank: Rank,
+	pub(crate) file: File,
 }
 
 impl Square {
-	pub fn new(file: File, rank: Rank) -> Square {
+	pub fn new(rank: Rank, file: File) -> Square {
 		Square {
-			file: file,
 			rank: rank,
+			file: file,
 		}
 	}
 
@@ -20,12 +20,12 @@ impl Square {
 			return Err(());
 		}
 
-		let file = File::from_char(square.chars().nth(0).unwrap())?;
 		let rank = Rank::from_char(square.chars().nth(1).unwrap())?;
+		let file = File::from_char(square.chars().nth(0).unwrap())?;
 
 		Ok(Square {
-			file: file,
 			rank: rank,
+			file: file,
 		})
 	}
 }
