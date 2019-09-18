@@ -128,4 +128,76 @@ impl Board {
 			println!();
 		}
 	}
+
+	pub fn can_capture(&self, square: Square, color: Color) -> Vec<Square> {
+		let mut squares = Vec::new();
+
+		let direction_change = match color {
+			Color::White => 1,
+			Color::Black => -1,
+		};
+
+		for name in &Name::all() {
+			let piece = Piece::simple(*name);
+			let capture_moves = piece.capture_moves();
+
+			for i in 0..capture_moves.len() {
+				let mut curr_rank: isize = square.rank.as_isize();
+				let mut curr_file: isize = square.file.as_isize();
+
+				'repetetive: loop {
+					for j in 0..capture_moves[i].len() {
+						curr_rank += capture_moves[i][j].backwards().delta_y()
+							* direction_change;
+						curr_file += capture_moves[i][j].backwards().delta_x()
+							* direction_change;
+
+						let file = match File::from_isize(curr_file) {
+							Ok(f) => f,
+							Err(_) => break 'repetetive,
+						};
+
+						let rank = match Rank::from_isize(curr_rank) {
+							Ok(r) => r,
+							Err(_) => break 'repetetive,
+						};
+
+						let square = Square::new(file, rank);
+
+						let curr_piece =
+							self.board[curr_rank as usize][curr_file as usize];
+
+						if j != capture_moves[i].len() - 1 {
+							if
+								piece.can_jump() ||
+								curr_piece.is_none()
+							{
+								continue;
+							} else {
+								break;
+							}
+						} else {
+							if curr_piece.is_some() {
+								let capturing_piece = curr_piece.unwrap();
+								if
+									capturing_piece.color != color &&
+									capturing_piece.name == *name
+								{
+									squares.push(square);
+								}
+
+								break 'repetetive;
+							}
+						}
+					}
+
+					if !piece.repetetive_moves() {
+						break;
+					}
+				}
+			}
+		}
+
+		return squares;
+	}
 }
