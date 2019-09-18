@@ -39,30 +39,8 @@ impl Board {
 		height: usize,
 		width: usize
 	) {	
-		board[0][0] = Some(Piece::new(
-			Color::White, Name::Rook, Square::new(File(0), Rank(0))
-		));
-		board[0][1] = Some(Piece::new(
-			Color::White, Name::Knight, Square::new(File(1), Rank(0))
-		));
-		board[0][2] = Some(Piece::new(
-			Color::White, Name::Bishop, Square::new(File(2), Rank(0))
-		));
-		board[0][3] = Some(Piece::new(
-			Color::White, Name::Queen, Square::new(File(3), Rank(0))
-		));
-		board[0][4] = Some(Piece::new(
-			Color::White, Name::King, Square::new(File(4), Rank(0))
-		));
-		board[0][5] = Some(Piece::new(
-			Color::White, Name::Bishop, Square::new(File(5), Rank(0))
-		));
-		board[0][6] = Some(Piece::new(
-			Color::White, Name::Knight, Square::new(File(6), Rank(0))
-		));
-		board[0][7] = Some(Piece::new(
-			Color::White, Name::Rook, Square::new(File(7), Rank(0))
-		));
+		let names = vec![Name::Rook, Name::Knight, Name::Bishop, Name::Queen,
+			Name::King, Name::Bishop, Name::Knight, Name::Rook];
 
 		for i in 0..width {
 			board[1][i] = Some(Piece::new(
@@ -71,32 +49,14 @@ impl Board {
 			board[6][i] = Some(Piece::new(
 				Color::Black, Name::Pawn, Square::new(File(i), Rank(6))
 			));
-		}
 
-		board[7][0] = Some(Piece::new(
-			Color::Black, Name::Rook, Square::new(File(0), Rank(7))
-		));
-		board[7][1] = Some(Piece::new(
-			Color::Black, Name::Knight, Square::new(File(1), Rank(7))
-		));
-		board[7][2] = Some(Piece::new(
-			Color::Black, Name::Bishop, Square::new(File(2), Rank(7))
-		));
-		board[7][3] = Some(Piece::new(
-			Color::Black, Name::Queen, Square::new(File(3), Rank(7))
-		));
-		board[7][4] = Some(Piece::new(
-			Color::Black, Name::King, Square::new(File(4), Rank(7))
-		));
-		board[7][5] = Some(Piece::new(
-			Color::Black, Name::Bishop, Square::new(File(5), Rank(7))
-		));
-		board[7][6] = Some(Piece::new(
-			Color::Black, Name::Knight, Square::new(File(6), Rank(7))
-		));
-		board[7][7] = Some(Piece::new(
-			Color::Black, Name::Rook, Square::new(File(7), Rank(7))
-		));
+			board[0][i] = Some(Piece::new(
+				Color::White, names[i], Square::new(File(i), Rank(0))
+			));
+			board[7][i] = Some(Piece::new(
+				Color::Black, names[i], Square::new(File(i), Rank(7))
+			));
+		}
 	}
 
 	pub fn move_piece(&mut self, from_square: Square, to_square: Square) {
