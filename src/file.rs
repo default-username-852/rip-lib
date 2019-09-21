@@ -61,3 +61,19 @@ impl PartialEq<usize> for File {
 		num == other
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn test_from_char_valid() {
+		let from_char = File::from_char('A');
+
+		assert!(from_char.is_ok());
+
+		let File(num) = from_char.unwrap();
+
+		assert_eq!(num, 0);
+	}
+}
