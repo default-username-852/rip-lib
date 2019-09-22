@@ -76,4 +76,11 @@ mod tests {
 
 		assert_eq!(num, 0);
 	}
+
+	#[test]
+	fn test_from_char_invalid() {
+		let from_char = File::from_char('I');
+
+		assert!(from_char.is_err());
+	}
 }
