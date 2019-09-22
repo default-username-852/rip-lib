@@ -61,3 +61,19 @@ impl PartialEq<usize> for Rank {
 		num == other
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn test_from_char_valid() {
+		let from_char = Rank::from_char('1');
+
+		assert!(from_char.is_ok());
+
+		let Rank(num) = from_char.unwrap();
+
+		assert_eq!(num, 0);
+	}
+}
