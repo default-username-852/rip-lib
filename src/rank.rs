@@ -76,4 +76,11 @@ mod tests {
 
 		assert_eq!(num, 0);
 	}
+
+	#[test]
+	fn test_from_char_invalid() {
+		let from_char = Rank::from_char('9');
+
+		assert!(from_char.is_err());
+	}
 }
