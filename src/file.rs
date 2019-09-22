@@ -83,4 +83,11 @@ mod tests {
 
 		assert!(from_char.is_err());
 	}
+
+	#[test]
+	fn test_from_char_lowercase_invalid() {
+		let from_char = File::from_char('a');
+
+		assert!(from_char.is_err());
+	}
 }
