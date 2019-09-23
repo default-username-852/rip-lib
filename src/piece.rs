@@ -10,18 +10,14 @@ pub struct Piece {
 	pub(crate) color: Color,
 	pub(crate) name: Name,
 	pub(crate) moved: bool,
-	pub(crate) prev_square: Square,
-	pub(crate) curr_square: Square,
 }
 
 impl Piece {
-	pub fn new(color: Color, name: Name, square: Square) -> Piece {
+	pub fn new(color: Color, name: Name) -> Piece {
 		Piece {
 			color: color,
 			name: name,
 			moved: false,
-			prev_square: square,
-			curr_square: square,
 		}
 	}
 
@@ -31,8 +27,6 @@ impl Piece {
 			color: Color::White,
 			name: name,
 			moved: false,
-			prev_square: square,
-			curr_square: square,
 		}
 	}
 

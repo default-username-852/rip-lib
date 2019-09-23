@@ -36,16 +36,16 @@ impl Game {
 		let to_rank = to_square.rank.as_usize();
 		let to_file = to_square.file.as_usize();
 
-		if self.board.board[from_rank][from_file].is_none() {
+		if self.board.get(from_square).is_empty() {
 			return Err("There is no piece to move".to_string());
 		}
 
-		if self.board.board[from_rank][from_file].unwrap().color != self.turn {
+		if self.board.get(from_square).piece.unwrap().color != self.turn {
 			return Err("You can't move the opponent's piece".to_string());
 		}
 
 		// check that the piece is allowed to go there
-		match self.board.board[from_rank][from_file].unwrap().name {
+		match self.board.get(from_square).piece.unwrap().name {
 			Name::King => {
 				if
 					(from_rank as isize - to_rank as isize).abs() != 1 &&
@@ -103,7 +103,7 @@ impl Game {
 						!(
 							(from_rank as isize - to_rank as isize).abs() == 1 &&
 							(from_file as isize - to_file as isize).abs() == 1 &&
-							self.board.board[to_rank][to_file].is_some()
+							!self.board.get(to_square).is_empty()
 						)
 					{
 						// the pawn is only allowed to move between columns
@@ -115,7 +115,7 @@ impl Game {
 						(from_rank as isize - to_rank as isize).abs() != 1 &&
 						!(
 							(from_rank as isize - to_rank as isize).abs() == 2 &&
-							self.board.board[from_rank][from_file].unwrap().moved == false
+							self.board.get(from_square).piece.unwrap().moved == false
 						)
 					{
 						return Err("The pawn cannot move to that position".to_string());
@@ -124,18 +124,18 @@ impl Game {
 			},
 		}
 
-		if self.board.board[to_rank][to_file].is_some() {
-			if self.board.board[to_rank][to_file].unwrap().color == self.turn {
+		if !self.board.get(to_square).is_empty() {
+			if self.board.get(to_square).piece.unwrap().color == self.turn {
 				return Err("You can't take your own piece".to_string());
 			} else {
 				// take the opponent's piece
-				self.board.board[to_rank][to_file] = None;
+				self.board.get_mut(to_square).piece = None;
 			}
 		}
 
 		self.board.move_piece(from_square, to_square);
 
-		self.moved_last = self.board.board[to_rank][to_file];
+		self.moved_last = self.board.get(to_square).piece;
 
 		self.turn = match self.turn {
 			Color::White => Color::Black,
@@ -156,7 +156,7 @@ impl Game {
 		let to_rank = to_square.rank.as_usize();
 		let to_file = to_square.file.as_usize();
 
-		let pawn = self.board.board[from_rank][from_file].unwrap();
+		let pawn = self.board.get(from_square).piece.unwrap();
 
 		if pawn.name != Name::Pawn {
 			return Err("Only pawns are allowed to perform en passant".to_string());
@@ -202,26 +202,16 @@ impl Game {
 			}
 		}
 
-		if captured.is_none() {
+		if captured.is_empty() {
 			return Err("Not a valid en passant".to_string());
-		} else if captured.unwrap() != self.moved_last.unwrap() {
+		} else if captured.piece.unwrap() != self.moved_last.unwrap() {
 			return Err("Not a valid en passant".to_string());
 		} else {
 			if
-				captured.unwrap().color == self.turn ||
-				captured.unwrap().name != Name::Pawn
+				captured.piece.unwrap().color == self.turn ||
+				captured.piece.unwrap().name != Name::Pawn
 			{
 				return Err("Not a valid en passant".to_string());
-			}
-
-			if captured.unwrap().color == Color::White {
-				if captured.unwrap().prev_square.rank != 1 {
-					return Err("Not a valid en passant".to_string());
-				}
-			} else {
-				if captured.unwrap().prev_square.rank != 6 {
-					return Err("Not a valid en passant".to_string());
-				}
 			}
 		}
 
@@ -231,9 +221,9 @@ impl Game {
 
 		self.board.move_piece(from_square, to_square);
 
-		self.board.capture_piece(captured.unwrap().curr_square);
+		self.board.capture_piece(captured);
 
-		self.moved_last = self.board.board[to_rank][to_file];
+		self.moved_last = self.board.get(to_square).piece;
 
 		self.turn = match self.turn {
 			Color::White => Color::Black,

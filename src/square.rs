@@ -1,10 +1,12 @@
 use crate::rank::Rank;
 use crate::file::File;
+use crate::piece::Piece;
 
 #[derive(Copy, Clone, PartialEq)]
 pub struct Square {
 	pub(crate) rank: Rank,
 	pub(crate) file: File,
+	pub(crate) piece: Option<Piece>,
 }
 
 impl Square {
@@ -12,6 +14,7 @@ impl Square {
 		Square {
 			rank: rank,
 			file: file,
+			piece: None,
 		}
 	}
 
@@ -26,7 +29,12 @@ impl Square {
 		Ok(Square {
 			rank: rank,
 			file: file,
+			piece: None,
 		})
+	}
+
+	pub fn is_empty(&self) -> bool {
+		self.piece.is_none()
 	}
 }
 
