@@ -200,9 +200,11 @@ impl Board {
 	pub fn can_capture(&self, square: Square, color: Color) -> Vec<Square> {
 		let mut squares = Vec::new();
 
+		// since we will be checking the moves of the oposite color,
+		// we have to change the sign of the direction
 		let direction_change = match color {
-			Color::White => 1,
-			Color::Black => -1,
+			Color::White => -1,
+			Color::Black => 1,
 		};
 
 		for name in &Name::all() {
