@@ -266,3 +266,21 @@ impl Board {
 		return squares;
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn test_move_piece() {
+		let mut board = Board::new();
+
+		let from = Square::from_str("A2").unwrap();
+		let to = Square::from_str("A3").unwrap();
+
+		board.move_piece(from, to);
+
+		assert!(board.get(from).is_empty());
+		assert!(!board.get(to).is_empty());
+	}
+}
