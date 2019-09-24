@@ -1,0 +1,6 @@
+max_width = 80
+hard_tabs = true
+tab_spaces = 2
+binop_separator = "Back"
+match_block_trailing_comma = true
+reorder_imports = false
