@@ -28,7 +28,7 @@ impl Game {
 	pub fn move_piece(
 		&mut self,
 		from_square: Square,
-		to_square: Square
+		to_square: Square,
 	) -> Result<(), String> {
 		let from_rank = from_square.rank.as_usize();
 		let from_file = from_square.file.as_usize();
@@ -47,16 +47,15 @@ impl Game {
 		// check that the piece is allowed to go there
 		match self.board.get(from_square).piece.unwrap().name {
 			Name::King => {
-				if
-					(from_rank as isize - to_rank as isize).abs() != 1 &&
+				if (from_rank as isize - to_rank as isize).abs() != 1 &&
 					(from_file as isize - to_file as isize).abs() != 1
 				{
 					return Err("The king cannot move to that position".to_string());
 				}
 			},
 			Name::Queen => {
-				if
-					from_rank != to_rank && from_file != to_file &&
+				if from_rank != to_rank &&
+					from_file != to_file &&
 					(from_rank as isize - to_rank as isize).abs() !=
 						(from_file as isize - to_file as isize).abs()
 				{
@@ -69,9 +68,8 @@ impl Game {
 				}
 			},
 			Name::Bishop => {
-				if
-					(from_rank as isize - to_rank as isize).abs() !=
-						(from_file as isize - to_file as isize).abs()
+				if (from_rank as isize - to_rank as isize).abs() !=
+					(from_file as isize - to_file as isize).abs()
 				{
 					return Err("The bishop cannot move to that position".to_string());
 				}
@@ -79,9 +77,9 @@ impl Game {
 			Name::Knight => {
 				// the Pythagorean theorem tells us that the knight can only move
 				// to positions within sqrt(5) of its original position
-				if
-						(from_rank as isize - to_rank as isize).pow(2) +
-						(from_file as isize - to_file as isize).pow(2) != 5
+				if (from_rank as isize - to_rank as isize).pow(2) +
+					(from_file as isize - to_file as isize).pow(2) !=
+					5
 				{
 					return Err("The knight cannot move to that position".to_string());
 				}
@@ -99,24 +97,18 @@ impl Game {
 				}
 
 				if from_file != to_file {
-					if
-						!(
-							(from_rank as isize - to_rank as isize).abs() == 1 &&
-							(from_file as isize - to_file as isize).abs() == 1 &&
-							!self.board.get(to_square).is_empty()
-						)
+					if !((from_rank as isize - to_rank as isize).abs() == 1 &&
+						(from_file as isize - to_file as isize).abs() == 1 &&
+						!self.board.get(to_square).is_empty())
 					{
 						// the pawn is only allowed to move between columns
 						// to capture another piece
 						return Err("The pawn cannot move to that position".to_string());
 					}
 				} else {
-					if
-						(from_rank as isize - to_rank as isize).abs() != 1 &&
-						!(
-							(from_rank as isize - to_rank as isize).abs() == 2 &&
-							self.board.get(from_square).piece.unwrap().moved == false
-						)
+					if (from_rank as isize - to_rank as isize).abs() != 1 &&
+						!((from_rank as isize - to_rank as isize).abs() == 2 &&
+							self.board.get(from_square).piece.unwrap().moved == false)
 					{
 						return Err("The pawn cannot move to that position".to_string());
 					}
@@ -148,7 +140,7 @@ impl Game {
 	pub fn en_passant(
 		&mut self,
 		from_square: Square,
-		to_square: Square
+		to_square: Square,
 	) -> Result<(), String> {
 		let from_rank = from_square.rank.as_usize();
 		let from_file = from_square.file.as_usize();
@@ -207,8 +199,7 @@ impl Game {
 		} else if captured.piece.unwrap() != self.moved_last.unwrap() {
 			return Err("Not a valid en passant".to_string());
 		} else {
-			if
-				captured.piece.unwrap().color == self.turn ||
+			if captured.piece.unwrap().color == self.turn ||
 				captured.piece.unwrap().name != Name::Pawn
 			{
 				return Err("Not a valid en passant".to_string());

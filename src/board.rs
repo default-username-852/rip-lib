@@ -35,24 +35,24 @@ impl Board {
 	}
 
 	fn initialize(board: &mut Vec<Vec<Square>>, height: usize, width: usize) {
-		let names = vec![Name::Rook, Name::Knight, Name::Bishop, Name::Queen,
-      Name::King, Name::Bishop, Name::Knight, Name::Rook];
+		let names = vec![
+			Name::Rook,
+			Name::Knight,
+			Name::Bishop,
+			Name::Queen,
+			Name::King,
+			Name::Bishop,
+			Name::Knight,
+			Name::Rook,
+		];
 
-    for i in 0..width {
-      board[1][i].piece = Some(Piece::new(
-        Color::White, Name::Pawn
-      ));
-      board[6][i].piece = Some(Piece::new(
-        Color::Black, Name::Pawn
-      ));
+		for i in 0..width {
+			board[1][i].piece = Some(Piece::new(Color::White, Name::Pawn));
+			board[6][i].piece = Some(Piece::new(Color::Black, Name::Pawn));
 
-      board[0][i].piece = Some(Piece::new(
-        Color::White, names[i]
-      ));
-      board[7][i].piece = Some(Piece::new(
-        Color::Black, names[i]
-      ));
-    }
+			board[0][i].piece = Some(Piece::new(Color::White, names[i]));
+			board[7][i].piece = Some(Piece::new(Color::Black, names[i]));
+		}
 	}
 
 	pub fn get(&self, square: Square) -> &Square {
@@ -64,11 +64,11 @@ impl Board {
 	}
 
 	pub fn move_piece(&mut self, from_square: Square, to_square: Square) {
-			let from_square = &mut self.get_mut(from_square);
-			let piece = from_square.piece.take();
-			let to_square = &mut self.get_mut(to_square);
+		let from_square = &mut self.get_mut(from_square);
+		let piece = from_square.piece.take();
+		let to_square = &mut self.get_mut(to_square);
 
-			to_square.piece = piece;
+		to_square.piece = piece;
 	}
 
 	pub fn capture_piece(&mut self, square: Square) {
@@ -99,17 +99,23 @@ impl Board {
 		let piece = square.piece.unwrap();
 
 		if piece.special_capture_move() {
-			legal_moves.extend_from_slice(
-				&self.calculate_legal_moves(square,	piece.moves(), false)
-			);
+			legal_moves.extend_from_slice(&self.calculate_legal_moves(
+				square,
+				piece.moves(),
+				false,
+			));
 
-			legal_moves.extend_from_slice(
-				&self.calculate_legal_moves(square, piece.capture_moves(), true)
-			);
+			legal_moves.extend_from_slice(&self.calculate_legal_moves(
+				square,
+				piece.capture_moves(),
+				true,
+			));
 		} else {
-			legal_moves.extend_from_slice(
-				&self.calculate_legal_moves(square, piece.moves(), false)
-			);
+			legal_moves.extend_from_slice(&self.calculate_legal_moves(
+				square,
+				piece.moves(),
+				false,
+			));
 		}
 
 		return legal_moves;
@@ -121,7 +127,7 @@ impl Board {
 		&self,
 		square: &Square,
 		moves: Vec<Vec<Direction>>,
-		capture_moves: bool
+		capture_moves: bool,
 	) -> Vec<Square> {
 		let mut legal_moves = Vec::new();
 		let piece = square.piece.unwrap();
@@ -215,10 +221,10 @@ impl Board {
 
 				'repetetive: loop {
 					for j in 0..capture_moves[i].len() {
-						curr_rank += capture_moves[i][j].backwards().delta_y()
-							* direction_change;
-						curr_file += capture_moves[i][j].backwards().delta_x()
-							* direction_change;
+						curr_rank +=
+							capture_moves[i][j].backwards().delta_y() * direction_change;
+						curr_file +=
+							capture_moves[i][j].backwards().delta_x() * direction_change;
 
 						let file = match File::from_isize(curr_file) {
 							Ok(f) => f,
@@ -233,10 +239,7 @@ impl Board {
 						let square = self.get(Square::new(rank, file));
 
 						if j != capture_moves[i].len() - 1 {
-							if
-								piece.can_jump() ||
-								square.is_empty()
-							{
+							if piece.can_jump() || square.is_empty() {
 								continue;
 							} else {
 								break;
@@ -244,8 +247,7 @@ impl Board {
 						} else {
 							if !square.is_empty() {
 								let capturing_piece = square.piece.unwrap();
-								if
-									capturing_piece.color != color &&
+								if capturing_piece.color != color &&
 									capturing_piece.name == *name
 								{
 									squares.push(*square);

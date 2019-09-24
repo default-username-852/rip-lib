@@ -16,7 +16,7 @@ impl Name {
 			Name::Rook,
 			Name::Bishop,
 			Name::Knight,
-			Name::Pawn
+			Name::Pawn,
 		];
 	}
 }
