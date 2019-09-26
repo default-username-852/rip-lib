@@ -5,6 +5,7 @@ use crate::square::Square;
 use crate::file::File;
 use crate::rank::Rank;
 use crate::direction::Direction;
+use std::convert::TryFrom;
 
 pub struct Board {
 	height: usize,
@@ -56,11 +57,11 @@ impl Board {
 	}
 
 	pub fn get(&self, square: Square) -> &Square {
-		&self.board[square.rank.as_usize()][square.file.as_usize()]
+		&self.board[usize::from(square.rank)][usize::from(square.file)]
 	}
 
 	pub fn get_mut(&mut self, square: Square) -> &mut Square {
-		&mut self.board[square.rank.as_usize()][square.file.as_usize()]
+		&mut self.board[usize::from(square.rank)][usize::from(square.file)]
 	}
 
 	pub fn move_piece(&mut self, from_square: Square, to_square: Square) {
@@ -137,20 +138,20 @@ impl Board {
 		};
 
 		for i in 0..moves.len() {
-			let mut curr_rank: isize = square.rank.as_isize();
-			let mut curr_file: isize = square.file.as_isize();
+			let mut curr_rank: isize = square.rank.into();
+			let mut curr_file: isize = square.file.into();
 
 			'repetetive: loop {
 				for j in 0..moves[i].len() {
 					curr_rank += moves[i][j].delta_y() * direction_change;
 					curr_file += moves[i][j].delta_x() * direction_change;
 
-					let file = match File::from_isize(curr_file) {
+					let file = match File::try_from(curr_file) {
 						Ok(f) => f,
 						Err(_) => break 'repetetive,
 					};
 
-					let rank = match Rank::from_isize(curr_rank) {
+					let rank = match Rank::try_from(curr_rank) {
 						Ok(r) => r,
 						Err(_) => break 'repetetive,
 					};
@@ -216,8 +217,8 @@ impl Board {
 			let capture_moves = piece.capture_moves();
 
 			for i in 0..capture_moves.len() {
-				let mut curr_rank: isize = square.rank.as_isize();
-				let mut curr_file: isize = square.file.as_isize();
+				let mut curr_rank: isize = square.rank.into();
+				let mut curr_file: isize = square.file.into();
 
 				'repetetive: loop {
 					for j in 0..capture_moves[i].len() {
@@ -226,12 +227,12 @@ impl Board {
 						curr_file +=
 							capture_moves[i][j].backwards().delta_x() * direction_change;
 
-						let file = match File::from_isize(curr_file) {
+						let file = match File::try_from(curr_file) {
 							Ok(f) => f,
 							Err(_) => break 'repetetive,
 						};
 
-						let rank = match Rank::from_isize(curr_rank) {
+						let rank = match Rank::try_from(curr_rank) {
 							Ok(r) => r,
 							Err(_) => break 'repetetive,
 						};

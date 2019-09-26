@@ -30,11 +30,11 @@ impl Game {
 		from_square: Square,
 		to_square: Square,
 	) -> Result<(), String> {
-		let from_rank = from_square.rank.as_usize();
-		let from_file = from_square.file.as_usize();
+		let from_rank: usize = from_square.rank.into();
+		let from_file: usize = from_square.file.into();
 
-		let to_rank = to_square.rank.as_usize();
-		let to_file = to_square.file.as_usize();
+		let to_rank: usize = to_square.rank.into();
+		let to_file: usize = to_square.file.into();
 
 		if self.board.get(from_square).is_empty() {
 			return Err("There is no piece to move".to_string());
@@ -142,11 +142,11 @@ impl Game {
 		from_square: Square,
 		to_square: Square,
 	) -> Result<(), String> {
-		let from_rank = from_square.rank.as_usize();
-		let from_file = from_square.file.as_usize();
+		let from_rank: usize = from_square.rank.into();
+		let from_file: usize = from_square.file.into();
 
-		let to_rank = to_square.rank.as_usize();
-		let to_file = to_square.file.as_usize();
+		let to_rank: usize = to_square.rank.into();
+		let to_file: usize = to_square.file.into();
 
 		let pawn = self.board.get(from_square).piece.unwrap();
 

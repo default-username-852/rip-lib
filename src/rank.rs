@@ -1,34 +1,32 @@
+use std::convert::TryFrom;
+
 #[derive(Copy, Clone, PartialEq)]
 pub struct Rank(pub usize);
 
-impl Rank {
-	pub fn as_char(&self) -> char {
-		let Rank(num) = self;
-		match num {
-			0 => '1',
-			1 => '2',
-			2 => '3',
-			3 => '4',
-			4 => '5',
-			5 => '6',
-			6 => '7',
-			7 => '8',
-			_ => ' ',
+impl TryFrom<usize> for Rank {
+	type Error = ();
+
+	fn try_from(value: usize) -> Result<Self, Self::Error> {
+		if value >= 0 && value < 8 {
+			return Ok(Rank(value));
 		}
+		Err(())
 	}
+}
 
-	pub fn as_usize(self) -> usize {
-		let Rank(num) = self;
-		num
+impl TryFrom<isize> for Rank {
+	type Error = ();
+
+	fn try_from(value: isize) -> Result<Self, Self::Error> {
+		Rank::try_from(value as usize)
 	}
+}
 
-	pub fn as_isize(self) -> isize {
-		let Rank(num) = self;
-		num as isize
-	}
+impl TryFrom<char> for Rank {
+	type Error = ();
 
-	pub fn from_char(c: char) -> Result<Rank, ()> {
-		match c {
+	fn try_from(value: char) -> Result<Self, Self::Error> {
+		match value {
 			'1' => Ok(Rank(0)),
 			'2' => Ok(Rank(1)),
 			'3' => Ok(Rank(2)),
@@ -40,18 +38,33 @@ impl Rank {
 			_ => Err(()),
 		}
 	}
+}
 
-	pub fn from_usize(u: usize) -> Result<Rank, ()> {
-		if u >= 0 && u < 8 {
-			return Ok(Rank(u));
-		} else {
-			return Err(());
-		}
+impl From<Rank> for usize {
+	fn from(rank: Rank) -> Self {
+		rank.0
 	}
+}
 
-	pub fn from_isize(i: isize) -> Result<Rank, ()> {
-		let u = i as usize;
-		return Rank::from_usize(u);
+impl From<Rank> for isize {
+	fn from(rank: Rank) -> Self {
+		rank.0 as isize
+	}
+}
+
+impl From<Rank> for char {
+	fn from(rank: Rank) -> Self {
+		match rank.0 {
+			0 => '1',
+			1 => '2',
+			2 => '3',
+			3 => '4',
+			4 => '5',
+			5 => '6',
+			6 => '7',
+			7 => '8',
+			_ => ' ',
+		}
 	}
 }
 
@@ -68,7 +81,7 @@ mod tests {
 
 	#[test]
 	fn test_from_char_valid() {
-		let from_char = Rank::from_char('1');
+		let from_char = Rank::try_from('1');
 
 		assert!(from_char.is_ok());
 
@@ -79,7 +92,7 @@ mod tests {
 
 	#[test]
 	fn test_from_char_invalid() {
-		let from_char = Rank::from_char('9');
+		let from_char = Rank::try_from('9');
 
 		assert!(from_char.is_err());
 	}

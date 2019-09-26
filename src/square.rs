@@ -1,6 +1,7 @@
 use crate::rank::Rank;
 use crate::file::File;
 use crate::piece::Piece;
+use std::convert::TryFrom;
 
 #[derive(Copy, Clone, PartialEq)]
 pub struct Square {
@@ -23,8 +24,8 @@ impl Square {
 			return Err(());
 		}
 
-		let rank = Rank::from_char(square.chars().nth(1).unwrap())?;
-		let file = File::from_char(square.chars().nth(0).unwrap())?;
+		let rank = Rank::try_from(square.chars().nth(1).unwrap())?;
+		let file = File::try_from(square.chars().nth(0).unwrap())?;
 
 		Ok(Square {
 			rank: rank,
@@ -40,6 +41,6 @@ impl Square {
 
 impl std::fmt::Debug for Square {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "{}{}", self.file.as_char(), self.rank.as_char())
+		write!(f, "{}{}", char::from(self.file), char::from(self.rank))
 	}
 }

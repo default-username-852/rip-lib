@@ -1,34 +1,32 @@
+use std::convert::TryFrom;
+
 #[derive(Copy, Clone, PartialEq)]
 pub struct File(pub usize);
 
-impl File {
-	pub fn as_char(&self) -> char {
-		let File(num) = self;
-		match num {
-			0 => 'A',
-			1 => 'B',
-			2 => 'C',
-			3 => 'D',
-			4 => 'E',
-			5 => 'F',
-			6 => 'G',
-			7 => 'H',
-			_ => ' ',
+impl TryFrom<usize> for File {
+	type Error = ();
+
+	fn try_from(value: usize) -> Result<Self, Self::Error> {
+		if value >= 0 && value < 8 {
+			return Ok(File(value));
 		}
+		Err(())
 	}
+}
 
-	pub fn as_usize(self) -> usize {
-		let File(num) = self;
-		num
+impl TryFrom<isize> for File {
+	type Error = ();
+
+	fn try_from(value: isize) -> Result<Self, Self::Error> {
+		File::try_from(value as usize)
 	}
+}
 
-	pub fn as_isize(self) -> isize {
-		let File(num) = self;
-		num as isize
-	}
+impl TryFrom<char> for File {
+	type Error = ();
 
-	pub fn from_char(c: char) -> Result<File, ()> {
-		match c {
+	fn try_from(value: char) -> Result<Self, Self::Error> {
+		match value {
 			'A' => Ok(File(0)),
 			'B' => Ok(File(1)),
 			'C' => Ok(File(2)),
@@ -40,18 +38,33 @@ impl File {
 			_ => Err(()),
 		}
 	}
+}
 
-	pub fn from_usize(u: usize) -> Result<File, ()> {
-		if u >= 0 && u < 8 {
-			return Ok(File(u));
-		} else {
-			return Err(());
-		}
+impl From<File> for usize {
+	fn from(file: File) -> Self {
+		file.0
 	}
+}
 
-	pub fn from_isize(i: isize) -> Result<File, ()> {
-		let u = i as usize;
-		return File::from_usize(u);
+impl From<File> for isize {
+	fn from(file: File) -> Self {
+		file.0 as isize
+	}
+}
+
+impl From<File> for char {
+	fn from(file: File) -> Self {
+		match file.0 {
+			0 => 'A',
+			1 => 'B',
+			2 => 'C',
+			3 => 'D',
+			4 => 'E',
+			5 => 'F',
+			6 => 'G',
+			7 => 'H',
+			_ => ' ',
+		}
 	}
 }
 
@@ -68,7 +81,7 @@ mod tests {
 
 	#[test]
 	fn test_from_char_valid() {
-		let from_char = File::from_char('A');
+		let from_char = File::try_from('A');
 
 		assert!(from_char.is_ok());
 
@@ -79,14 +92,14 @@ mod tests {
 
 	#[test]
 	fn test_from_char_invalid() {
-		let from_char = File::from_char('I');
+		let from_char = File::try_from('I');
 
 		assert!(from_char.is_err());
 	}
 
 	#[test]
 	fn test_from_char_lowercase_invalid() {
-		let from_char = File::from_char('a');
+		let from_char = File::try_from('a');
 
 		assert!(from_char.is_err());
 	}
