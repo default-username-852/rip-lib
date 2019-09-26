@@ -268,6 +268,20 @@ impl Board {
 
 		return squares;
 	}
+
+	fn find_piece(&self, piece: Piece) -> Vec<&Square> {
+		let mut found_pieces = Vec::new();
+		for row in &self.board {
+			for sq in row {
+				if sq.piece.is_some() {
+					if sq.piece.unwrap() == piece {
+						found_pieces.push(sq);
+					}
+				}
+			}
+		}
+		found_pieces
+	}
 }
 
 #[cfg(test)]
