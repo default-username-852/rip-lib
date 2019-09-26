@@ -10,7 +10,7 @@ use std::convert::TryFrom;
 pub struct Board {
 	height: usize,
 	width: usize,
-	pub(crate) board: Vec<Vec<Square>>,
+	board: Vec<Vec<Square>>,
 }
 
 impl Board {
