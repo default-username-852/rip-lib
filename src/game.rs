@@ -3,6 +3,9 @@ use crate::color::Color;
 use crate::name::Name;
 use crate::piece::Piece;
 use crate::square::Square;
+use crate::rank::Rank;
+use crate::file::File;
+use std::convert::TryFrom;
 
 pub struct Game {
 	board: Board,
@@ -171,10 +174,10 @@ impl Game {
 
 			if (from_file as isize - to_file as isize) == 1 {
 				// move to the right
-				captured = self.board.board[from_rank][from_file - 1];
+				captured = self.board.get(Square::new(Rank::try_from(from_rank).unwrap(), File::try_from(from_file - 1).unwrap())).clone();
 			} else if (from_file as isize - to_file as isize) == -1 {
 				// move to the left
-				captured = self.board.board[from_rank][from_file + 1];
+				captured = self.board.get(Square::new(Rank::try_from(from_rank).unwrap(), File::try_from(from_file + 1).unwrap())).clone();
 			} else {
 				return Err("Not a valid en passant".to_string());
 			}
@@ -185,10 +188,10 @@ impl Game {
 
 			if (from_file as isize - to_file as isize) == 1 {
 				// move to the left
-				captured = self.board.board[from_rank][from_file - 1];
+				captured = self.board.get(Square::new(Rank::try_from(from_rank).unwrap(), File::try_from(from_file + 1).unwrap())).clone();
 			} else if (from_file as isize - to_file as isize) == -1 {
 				// move to the right
-				captured = self.board.board[from_rank][from_file + 1];
+				captured = self.board.get(Square::new(Rank::try_from(from_rank).unwrap(), File::try_from(from_file + 1).unwrap())).clone();
 			} else {
 				return Err("Not a valid en passant".to_string());
 			}
