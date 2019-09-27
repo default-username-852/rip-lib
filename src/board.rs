@@ -273,7 +273,7 @@ impl Board {
 		let mut found_pieces = Vec::new();
 		for row in &self.board {
 			for sq in row {
-				if sq.piece.is_some() {
+				if !sq.is_empty() {
 					if sq.piece.unwrap() == piece {
 						found_pieces.push(sq);
 					}
