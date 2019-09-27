@@ -269,7 +269,7 @@ impl Board {
 		return squares;
 	}
 
-	fn find_piece(&self, piece: Piece) -> Vec<&Square> {
+	fn find(&self, piece: Piece) -> Vec<&Square> {
 		let mut found_pieces = Vec::new();
 		for row in &self.board {
 			for sq in row {
