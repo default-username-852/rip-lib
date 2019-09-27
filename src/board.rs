@@ -274,7 +274,8 @@ impl Board {
 		for row in &self.board {
 			for sq in row {
 				if !sq.is_empty() {
-					if sq.piece.unwrap() == piece { //Because of the implementation of PartialEq on Piece, this will return true
+					if sq.piece.unwrap() == piece { //Because of the implementation of PartialEq
+													// on Piece, this will return true
 													//no matter if the pieces have moved or not
 						found_pieces.push(sq);
 					}
