@@ -5,7 +5,7 @@ use crate::square::Square;
 
 use std::fmt;
 
-#[derive(Copy, Clone, PartialEq)]
+#[derive(Copy, Clone)]
 pub struct Piece {
 	pub(crate) color: Color,
 	pub(crate) name: Name,
@@ -114,4 +114,10 @@ impl fmt::Display for Piece {
 			Name::Pawn => write!(f, "P"),
 		}
 	}
+}
+
+impl PartialEq for Piece {
+    fn eq(&self, other: &Self) -> bool {
+        self.color == other.color && self.name == other.name
+    }
 }
